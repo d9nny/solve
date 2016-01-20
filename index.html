@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" ng-app="MathEvalGame">
+<head>
+  <meta charset="utf-8">
+  <title>Eval</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="views/stylesheet/index.css">
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/services/game.js"></script>
+  <script src="js/services/solution.js"></script>
+  <script src="js/controllers/gameController.js"></script>
+</head>
+
+<body >
+  <div id="content" ng-controller='GameController as ctrl'>
+
+    <div id="heading">
+      <h1 class="title">EVAL</h1>
+      <div class="scores-container">
+        <div class="total-score-container">
+          <score>{{ ctrl.game.totalScore }}</score><br>Total<br>Score
+        </div>  
+      </div>
+      <div class="round-container">
+        <div class="total-round-container">
+          Round<br>Number<br><score>{{ ctrl.round }}</score>
+        </div> 
+    </div>
+
+    <div id='game_setup' ng-show='ctrl.isActiveTab(1)'>
+      <div class="form-group">
+        <label for="sel1">How many large numbers?</label>
+        <div id='controls_start'>
+          <button class="btn" ng-click="ctrl.startGame(1); ctrl.startPermutations()">1</button>
+          <button class="btn" ng-click="ctrl.startGame(2); ctrl.startPermutations()">2</button>
+          <button class="btn" ng-click="ctrl.startGame(3); ctrl.startPermutations()">3</button>
+          <button class="btn" ng-click="ctrl.startGame(4); ctrl.startPermutations()">4</button>
+        </div>
+      </div>
+    </div>
+
+    <div id='game' ng-show='ctrl.isActiveTab(2)'>
+      <div id='target_number'><target>{{ ctrl.game.targetNumber }}</target><br>Target Number</div>
+
+      <div id="calculator_screen">
+        <div id='first_pick' class="pull-left"> {{ctrl.game.firstPick}}</div>          
+        <div id='second_pick' class="pull-right"> {{ctrl.game.secondPick}}</div>
+      </div>
+
+      <div id='operators_sum'>
+        <button class="btn" ng-show='ctrl.isActiveOp(3)' ng-click="ctrl.userAddOp(3)">/</button>
+        <button class="btn" ng-show='ctrl.isActiveOp(2)' ng-click="ctrl.userAddOp(2)">x</button>
+        <button class="btn" ng-show='ctrl.isActiveOp(1)' ng-click="ctrl.userAddOp(1)">-</button>
+        <button class="btn" ng-show='ctrl.isActiveOp(0)' ng-click="ctrl.userAddOp(0)">+</button>
+        <button class="btn" ng-show='ctrl.isActiveOp(4)' ng-click="ctrl.userAddOp(0)"></button>
+      </div>
+
+      <div id='number_cards'>
+        <button class="btn" ng-show='ctrl.isActiveCard(0)' ng-click="ctrl.userAddNum(0)">{{ ctrl.game.userCards[0] }}</button>
+        <button class="btn" ng-show='ctrl.isActiveCard(1)' ng-click="ctrl.userAddNum(1)">{{ ctrl.game.userCards[1] }}</button>
+        <button class="btn" ng-show='ctrl.isActiveCard(2)' ng-click="ctrl.userAddNum(2)">{{ ctrl.game.userCards[2] }}</button>
+        <button class="btn" ng-show='ctrl.isActiveCard(3)' ng-click="ctrl.userAddNum(3)">{{ ctrl.game.userCards[3] }}</button>
+        <button class="btn" ng-show='ctrl.isActiveCard(4)' ng-click="ctrl.userAddNum(4)">{{ ctrl.game.userCards[4] }}</button>
+        <button class="btn" ng-show='ctrl.isActiveCard(5)' ng-click="ctrl.userAddNum(5)">{{ ctrl.game.userCards[5] }}</button>
+      </div>
+
+      <div id='operators'>
+        <button class="btn" ng-click="ctrl.setOp(3)">/</button>
+        <button class="btn" ng-click="ctrl.setOp(2)">x</button>
+        <button class="btn" ng-click="ctrl.setOp(0)">+</button>
+        <button class="btn" ng-click="ctrl.setOp(1)">-</button>
+      </div>
+
+      <div><button id='calculator_button' class="btn" ng-click="ctrl.calculate()">Calculate</button></div>
+
+      <div id='controls'>
+        <button class="btn" ng-click="ctrl.setTab(3); ctrl.reset()">GIVE UP!</button>
+        <button class="btn" ng-click="ctrl.setTab(3); ctrl.submit()">SUBMIT</button>
+        <button class="btn" ng-click="ctrl.sumReset()">RESET</button>
+      </div>
+
+    </div>
+
+    <div id='end_game' ng-show='ctrl.isActiveTab(3)'>
+      <div id='solutions'> 
+        <h2>Solutions</h3>
+        <ul>
+          <ul ng-repeat="solution in ctrl.roundSolutions">{{ solution }}</ul> 
+        </ul>
+      </div>
+      <div id='play_again'>
+        <button class="btn" ng-click="ctrl.setTab(1)">PLAY AGAIN</button>
+      </div>
+      </div>
+
+    </div>
+  </body>
+  </html>
